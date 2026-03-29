@@ -110,8 +110,8 @@ export default function HomePage() {
 
           {/* Visually Locked Search Zone */}
           <div className="relative z-10 w-full max-w-[540px] group mt-50">
-            {/* Animated, blended glow background */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-pink-500/40 rounded-2xl blur-md opacity-70 transition duration-1000 group-hover:opacity-100 group-hover:blur-lg" />
+            {/* Animated, blended glow background - reduced bottom glow */}
+            <div className="absolute -top-1 -left-1 -right-1 bottom-2 bg-gradient-to-r from-indigo-500/40 via-purple-500/40 to-pink-500/40 rounded-2xl blur-md opacity-70 transition duration-1000 group-hover:opacity-100 group-hover:blur-lg" />
 
             <div className="relative glass-card rounded-2xl p-1.5 shadow-2xl border border-white/10 dark:border-black/10">
               <div className="w-full flex items-center bg-surface/50 rounded-xl overflow-hidden backdrop-blur-md transition-colors group-hover:bg-surface/80">
