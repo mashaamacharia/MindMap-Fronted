@@ -23,7 +23,7 @@ export function AuthShell({ children, className }: AuthShellProps) {
     <div className="flex min-h-screen flex-col bg-canvas">
       {/* Header with Wordmark */}
       <header className="flex h-20 items-center justify-center px-4">
-        <Wordmark size="md" />
+        <Wordmark size="sm" showLogo />
       </header>
 
       {/* Main content - centered, max-width 440px */}
