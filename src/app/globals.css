@@ -1,0 +1,261 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* M1NDMAP11 Design System Color Tokens - SPEC EXACT */
+:root {
+  /* Core palette - per Section 2 of spec */
+  --canvas: 243 239 230;      /* #F3EFE6 - Default background everywhere */
+  --ink: 15 20 22;            /* #0F1416 - All body text and iconography */
+  --ecru: 243 239 233;        /* #F3EFE9 - Wordmark background */
+  --charcoal: 17 17 17;       /* #111111 - Wordmark text on ecru */
+  --graphite: 14 14 14;       /* #0E0E0E - Inverted dark surfaces */
+  --surface: 255 255 255;     /* #FFFFFF - Cards and panels */
+  --border: 232 228 220;      /* #E8E4DC - All dividers and outlines */
+  --muted: 155 149 144;       /* #9B9590 - Secondary text, captions, placeholders */
+
+  /* Semantic mappings */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--canvas);
+  --secondary: var(--ecru);
+  --secondary-foreground: var(--charcoal);
+  --muted-color: var(--ecru);
+  --muted-foreground: var(--graphite);
+  --accent: var(--ecru);
+  --accent-foreground: var(--charcoal);
+  --destructive: 185 28 28;   /* #B91C1C - muted red for errors */
+  --destructive-foreground: var(--canvas);
+  --border-color: var(--border);
+  --input: var(--border);
+  --ring: var(--charcoal);
+
+  /* Radius */
+  --radius: 0.375rem;
+}
+
+/* Dark mode - inverted palette using graphite as base */
+.dark {
+  --canvas: 14 14 14;         /* #0E0E0E - graphite */
+  --ink: 243 239 230;         /* #F3EFE6 - canvas inverted */
+  --ecru: 17 17 17;           /* #111111 - charcoal */
+  --charcoal: 243 239 233;    /* #F3EFE9 - ecru inverted */
+  --graphite: 243 239 230;    /* #F3EFE6 - canvas inverted */
+  --surface: 17 17 17;        /* #111111 - charcoal */
+  --border: 38 38 38;         /* #262626 - dark border */
+  --muted: 155 149 144;       /* #9B9590 - same as light */
+
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--canvas);
+  --secondary: var(--ecru);
+  --secondary-foreground: var(--charcoal);
+  --muted-color: var(--ecru);
+  --muted-foreground: var(--graphite);
+  --accent: var(--ecru);
+  --accent-foreground: var(--charcoal);
+  --destructive: 220 38 38;
+  --destructive-foreground: var(--ink);
+  --border-color: var(--border);
+  --input: var(--border);
+  --ring: var(--graphite);
+}
+
+@theme inline {
+  /* Typography - Inter for UI, GT America for wordmark */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-display: 'GT America', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Color tokens */
+  --color-canvas: rgb(var(--canvas));
+  --color-ink: rgb(var(--ink));
+  --color-ecru: rgb(var(--ecru));
+  --color-charcoal: rgb(var(--charcoal));
+  --color-graphite: rgb(var(--graphite));
+  --color-surface: rgb(var(--surface));
+  --color-border: rgb(var(--border));
+  --color-muted: rgb(var(--muted));
+
+  /* Semantic colors */
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+
+  /* Border radius */
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-canvas text-ink antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Typography scale - executive clarity */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight text-ink;
+  }
+
+  h1 {
+    @apply text-3xl font-light leading-tight;
+  }
+
+  h2 {
+    @apply text-2xl font-light leading-snug;
+  }
+
+  h3 {
+    @apply text-xl font-normal leading-snug;
+  }
+
+  h4 {
+    @apply text-lg font-normal leading-normal;
+  }
+
+  /* Wordmark styling - GT America Light, ALL CAPS, tracking +3% */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  /* Tracking utility for wordmark */
+  .tracking-wordmark {
+    letter-spacing: 0.03em;
+  }
+
+  /* Focus states - subtle ring */
+  :focus-visible {
+    @apply outline-none ring-1 ring-charcoal ring-offset-2 ring-offset-canvas;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-ink/10;
+  }
+}
+
+@layer utilities {
+  /* Executive-appropriate spacing */
+  .executive-padding {
+    @apply px-6 py-4 md:px-8 md:py-6;
+  }
+
+  /* Card elevation - subtle shadow only */
+  .card-elevated {
+    @apply bg-surface border border-border shadow-sm;
+  }
+
+  /* Glassmorphism - Premium executive feel */
+  .glass-card {
+    @apply bg-surface/70 border border-border/50 backdrop-blur-xl shadow-sm;
+  }
+
+  .glass-morphism {
+    @apply bg-canvas/40 backdrop-blur-md border border-border/30;
+  }
+
+  /* Subtle ink gradient for professional depth */
+  .text-gradient-ink {
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-ink to-ink/70;
+  }
+
+  /* Text balance for titles */
+  .text-executive {
+    @apply text-balance leading-tight tracking-tight;
+  }
+
+  /* Typography Scale - SPEC EXACT (Section 2) */
+  /* text-h1: 44px/52px, 600 weight */
+  .text-h1 {
+    font-size: 44px;
+    line-height: 52px;
+    font-weight: 600;
+  }
+
+  /* text-h2: 32px/40px, 600 weight */
+  .text-h2 {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 600;
+  }
+
+  /* text-h3: 24px/32px, 500 weight */
+  .text-h3 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 500;
+  }
+
+  /* text-body-lg: 18px/28px, 400 weight */
+  .text-body-lg {
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 400;
+  }
+
+  /* text-body-md: 16px/26px, 400 weight */
+  .text-body-md {
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+  }
+
+  /* text-caption: 13px/20px, 400 weight */
+  .text-caption {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+  }
+
+  /* Legacy utilities */
+  .text-body-sm {
+    @apply text-xs leading-4;
+  }
+
+  .text-label {
+    @apply text-sm font-medium leading-5;
+  }
+
+  .text-h4 {
+    @apply text-lg font-normal leading-normal;
+  }
+}
