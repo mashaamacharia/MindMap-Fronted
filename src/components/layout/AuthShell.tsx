@@ -7,6 +7,7 @@
 'use client';
 
 import { Wordmark } from '@/components/ui/Wordmark';
+import { SoundWave } from '@/components/ui/SoundWave';
 import { cn } from '@/lib/utils';
 
 interface AuthShellProps {
@@ -25,6 +26,10 @@ export function AuthShell({ children, className }: AuthShellProps) {
       <header className="flex h-20 items-center justify-center px-4">
         <Wordmark size="sm" showLogo />
       </header>
+
+      <div className="flex justify-center -mt-6">
+        <SoundWave state="idle" className="w-80 opacity-60" />
+      </div>
 
       {/* Main content - centered, max-width 440px */}
       <main className="flex flex-1 flex-col items-center justify-center px-4 py-8">

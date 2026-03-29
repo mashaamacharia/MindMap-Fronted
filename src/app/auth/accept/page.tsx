@@ -77,7 +77,7 @@ export default function AcceptInvitationPage() {
   if (!token) {
     return (
       <Card className="p-6">
-        <ErrorMessage message="No invitation token provided." />
+        <ErrorMessage error="No invitation token provided." />
         <Button className="mt-4 w-full" onClick={handleBack}>
           Back to login
         </Button>

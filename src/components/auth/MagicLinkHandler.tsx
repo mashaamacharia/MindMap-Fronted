@@ -102,7 +102,7 @@ export function MagicLinkHandler({
   if (!token) {
     return (
       <Card className="p-6">
-        <ErrorMessage message="Invalid magic link. No token provided." />
+        <ErrorMessage error="Invalid magic link. No token provided." />
         <Button
           className="mt-4 w-full"
           onClick={() => router.push('/auth/login')}
@@ -116,7 +116,7 @@ export function MagicLinkHandler({
   if (verifyMutation.isPending) {
     return (
       <div className="flex flex-col items-center gap-6 py-12">
-        <SoundWave state="thinking" className="w-32" />
+        <SoundWave state="thinking" className="w-80 max-w-full" />
         <p className="text-body-md text-muted">Verifying your link...</p>
       </div>
     );
@@ -126,7 +126,7 @@ export function MagicLinkHandler({
     return (
       <Card className="p-6">
         <ErrorMessage
-          message={
+          error={
             error?.message ||
             verifyMutation.error?.message ||
             'Failed to verify magic link. It may have expired.'
