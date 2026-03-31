@@ -22,7 +22,7 @@ export const artifactKeys = {
 /**
  * Hook to list artifacts
  */
-export function useArtifacts(page = 1, limit = 20) {
+export function useArtifacts(page = 1, limit = 10) {
   return useQuery({
     queryKey: artifactKeys.list(page, limit),
     queryFn: () => artifactsApi.listArtifacts(page, limit),

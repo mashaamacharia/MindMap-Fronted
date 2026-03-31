@@ -61,7 +61,7 @@ export default function ProjectDetailPage({
 
   const { data: project, isLoading: projectLoading } = useProject(projectId);
   const { data: summary } = useProjectSummary(projectId);
-  const { data: challenges, isLoading: challengesLoading } = useChallenges(1, 20);
+  const { data: challenges, isLoading: challengesLoading } = useChallenges(1, 10);
   const deleteProject = useDeleteProject();
   const archiveProject = useArchiveProject();
 

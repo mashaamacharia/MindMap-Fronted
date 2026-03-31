@@ -16,7 +16,7 @@ import type {
  */
 export async function listArtifacts(
   page = 1,
-  limit = 20
+  limit = 10
 ): Promise<PaginatedResponse<ArtifactRead>> {
   const { data } = await api.get<PaginatedResponse<ArtifactRead>>('/artifacts/', {
     params: { page, limit },

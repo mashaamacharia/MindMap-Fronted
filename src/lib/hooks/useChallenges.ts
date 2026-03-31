@@ -20,7 +20,7 @@ export const challengeKeys = {
 /**
  * Hook to list challenges
  */
-export function useChallenges(page = 1, limit = 20) {
+export function useChallenges(page = 1, limit = 10) {
   return useQuery({
     queryKey: challengeKeys.list(page, limit),
     queryFn: () => challengesApi.listChallenges(page, limit),

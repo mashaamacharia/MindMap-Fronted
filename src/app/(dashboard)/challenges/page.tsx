@@ -16,7 +16,7 @@ export default function ChallengesPage() {
   const [search, setSearch] = useState('');
 
   // Hook expects (page, limit)
-  const { data, isLoading } = useChallenges(1, 20);
+  const { data, isLoading } = useChallenges(1, 10);
 
   // Apply client-side search against the returned items
   const filtered = data?.items?.filter((c) =>

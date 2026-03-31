@@ -36,7 +36,7 @@ export function ChallengeForm({
 
   const { data: constants, isLoading: constantsLoading } = useConstants();
   const { data: domains, isLoading: domainsLoading } = useDomains();
-  const { data: projects, isLoading: projectsLoading } = useProjects(1, 100);
+  const { data: projects, isLoading: projectsLoading } = useProjects(1, 20);
 
   const {
     register,

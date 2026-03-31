@@ -91,6 +91,12 @@ const memberNavItems: NavItem[] = [
     minRole: 'member',
   },
   {
+    label: 'Challenges',
+    href: '/challenges',
+    icon: Sparkles,
+    minRole: 'member',
+  },
+  {
     label: 'Analyze',
     href: '/analyze',
     icon: Sparkles,

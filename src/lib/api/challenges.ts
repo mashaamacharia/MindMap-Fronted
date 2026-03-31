@@ -15,7 +15,7 @@ import type {
  */
 export async function listChallenges(
   page = 1,
-  limit = 20
+  limit = 10
 ): Promise<PaginatedResponse<ChallengeRead>> {
   const { data } = await api.get<PaginatedResponse<ChallengeRead>>('/challenges/', {
     params: { page, limit },

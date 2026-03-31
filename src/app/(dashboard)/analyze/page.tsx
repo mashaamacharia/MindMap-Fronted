@@ -69,7 +69,7 @@ export default function AnalyzePage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   /* ── data hooks ── */
-  const { data: projects } = useProjects(1, 100);
+  const { data: projects } = useProjects(1, 20);
   const { data: domains } = useDomains();
   const createChallenge = useCreateChallenge();
   const triggerAnalyze = useAnalyze();
@@ -316,11 +316,12 @@ export default function AnalyzePage() {
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="none">None</SelectItem>
-                                {projects?.items?.map((p) => (
+                                  {projects?.items?.map((p) => (
                                   <SelectItem key={p.id} value={p.id}>
                                     {p.title}
                                   </SelectItem>
                                 ))}
+                                
                               </SelectContent>
                             </Select>
                           </div>

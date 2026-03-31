@@ -81,7 +81,7 @@ export default function ArtifactsPage() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useArtifacts(page, 20);
+  const { data, isLoading } = useArtifacts(page, 10);
 
   // Filter artifacts by status and search
   const filteredArtifacts = data?.items?.filter((artifact) => {
