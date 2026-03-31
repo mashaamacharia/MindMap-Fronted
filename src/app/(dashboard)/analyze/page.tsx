@@ -4,7 +4,7 @@
  *
  * Flow:
  * 1. User types a raw decision query
- * 2. Optionally selects project + domain
+ * 2. Selects project (required) + domain (optional)
  * 3. Hits "Analyze" → auto-creates a challenge → triggers AI analysis
  * 4. SoundWave transitions: idle → input (typing) → thinking (analyzing) → result (done)
  * 5. ArtifactViewer renders inline below the wave
@@ -30,6 +30,7 @@ import {
   useExportPdf,
   useExportPptx,
   useReanalyze,
+  useCreateProject,
 } from '@/lib/hooks';
 import type { ArtifactRead } from '@/lib/types';
 
@@ -44,8 +45,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/Dialog';
 import { RoleGate } from '@/components/ui/RoleGate';
 import { Wordmark } from '@/components/ui/Wordmark';
+import { ProjectForm } from '@/components/projects';
 
 type WaveState = 'idle' | 'input' | 'thinking' | 'result';
 type AnalyzePhase = 'prompt' | 'analyzing' | 'result';
@@ -59,6 +68,7 @@ export default function AnalyzePage() {
   const [selectedProjectId, setSelectedProjectId] = useState('');
   const [selectedDomainCode, setSelectedDomainCode] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showCreateProjectDialog, setShowCreateProjectDialog] = useState(false);
 
   /* ── flow state ── */
   const [phase, setPhase] = useState<AnalyzePhase>('prompt');
@@ -69,13 +79,14 @@ export default function AnalyzePage() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   /* ── data hooks ── */
-  const { data: projects } = useProjects(1, 20);
+  const { data: projects, refetch: refetchProjects } = useProjects(1, 20);
   const { data: domains } = useDomains();
   const createChallenge = useCreateChallenge();
   const triggerAnalyze = useAnalyze();
   const reanalyze = useReanalyze();
   const exportPdf = useExportPdf();
   const exportPptx = useExportPptx();
+  const createProject = useCreateProject();
 
   /* ── poll status until complete ── */
   const { data: statusData } = useAnalyzeStatus(artifactId, pollingEnabled);
@@ -130,6 +141,12 @@ export default function AnalyzePage() {
     const trimmed = rawText.trim();
     if (trimmed.length < 10) {
       toast.error('Please describe your challenge in at least 10 characters.');
+      return;
+    }
+
+    if (!selectedProjectId) {
+      toast.error('You need to select or create a project before analyzing.');
+      setShowCreateProjectDialog(true);
       return;
     }
 
@@ -305,7 +322,7 @@ export default function AnalyzePage() {
                           {/* Project */}
                           <div className="space-y-1.5">
                             <label className="text-caption text-muted font-medium">
-                              Project (optional)
+                              Project *
                             </label>
                             <Select
                               value={selectedProjectId || undefined}
@@ -485,6 +502,33 @@ export default function AnalyzePage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Create Project Dialog */}
+        <Dialog open={showCreateProjectDialog} onOpenChange={setShowCreateProjectDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create a new project</DialogTitle>
+              <DialogDescription>
+                You need to create or select a project before analyzing a challenge.
+              </DialogDescription>
+            </DialogHeader>
+            <ProjectForm
+              onSubmit={async (data) => {
+                try {
+                  await createProject.mutateAsync(data);
+                  await refetchProjects();
+                  setShowCreateProjectDialog(false);
+                  toast.success('Project created! Select it and try analyzing again.');
+                } catch {
+                  toast.error('Failed to create project.');
+                }
+              }}
+              onCancel={() => setShowCreateProjectDialog(false)}
+              isLoading={createProject.isPending}
+              error={createProject.isError ? new Error('Failed to create project') : null}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

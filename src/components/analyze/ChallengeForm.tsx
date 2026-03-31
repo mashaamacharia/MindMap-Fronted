@@ -83,7 +83,7 @@ export function ChallengeForm({
             onValueChange={(value) => setValue('project_id', value === 'none' ? '' : value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select project (optional)" />
+              <SelectValue placeholder="Select project" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
@@ -94,7 +94,7 @@ export function ChallengeForm({
               ))}
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted">Optionally associate this challenge with a project</p>
+          <p className="text-xs text-charcoal">Every challenge must be associated with a project</p>
         </div>
 
         {/* Raw text */}
