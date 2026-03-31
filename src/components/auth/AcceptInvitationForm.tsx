@@ -94,13 +94,7 @@ export function AcceptInvitationForm({
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         {error && (
-          <ErrorMessage
-            message={
-              error instanceof Error
-                ? error.message
-                : 'Failed to accept invitation. Please try again.'
-            }
-          />
+          <ErrorMessage error={error ?? 'Failed to accept invitation. Please try again.'} />
         )}
 
         {/* Personal Info */}
@@ -119,7 +113,7 @@ export function AcceptInvitationForm({
               disabled={isLoading}
             />
             {errors.full_name && (
-              <p className="text-caption text-red-600">{errors.full_name.message}</p>
+            <p className="text-caption text-destructive">{errors.full_name.message}</p>
             )}
           </div>
 
@@ -134,7 +128,7 @@ export function AcceptInvitationForm({
               disabled={isLoading}
             />
             {errors.job_title && (
-              <p className="text-caption text-red-600">{errors.job_title.message}</p>
+              <p className="text-caption text-destructive">{errors.job_title.message}</p>
             )}
           </div>
 
@@ -158,7 +152,7 @@ export function AcceptInvitationForm({
               </SelectContent>
             </Select>
             {errors.seniority_level && (
-              <p className="text-caption text-red-600">{errors.seniority_level.message}</p>
+              <p className="text-caption text-destructive">{errors.seniority_level.message}</p>
             )}
           </div>
 
@@ -182,7 +176,7 @@ export function AcceptInvitationForm({
               </SelectContent>
             </Select>
             {errors.primary_function && (
-              <p className="text-caption text-red-600">{errors.primary_function.message}</p>
+              <p className="text-caption text-destructive">{errors.primary_function.message}</p>
             )}
           </div>
 
@@ -197,7 +191,7 @@ export function AcceptInvitationForm({
               disabled={isLoading}
             />
             {errors.location && (
-              <p className="text-caption text-red-600">{errors.location.message}</p>
+              <p className="text-caption text-destructive">{errors.location.message}</p>
             )}
           </div>
         </div>

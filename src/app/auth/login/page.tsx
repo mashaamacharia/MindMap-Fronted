@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api/axios';
 import {
   EmailForm,
   SignupForm,
@@ -66,7 +67,7 @@ export default function LoginPage() {
       setStep(data.path);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to check email');
+      toast.error(getErrorMessage(error) || 'Failed to check email');
     },
   });
 
@@ -77,7 +78,7 @@ export default function LoginPage() {
       router.push(`/auth/verify?email=${encodeURIComponent(email)}&purpose=signup`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to create account');
+      toast.error(getErrorMessage(error) || 'Failed to create account');
     },
   });
 
@@ -88,7 +89,7 @@ export default function LoginPage() {
       router.push(`/auth/verify?email=${encodeURIComponent(email)}&purpose=signup`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to submit request');
+      toast.error(getErrorMessage(error) || 'Failed to submit request');
     },
   });
 
@@ -104,7 +105,7 @@ export default function LoginPage() {
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to send signin');
+      toast.error(getErrorMessage(error) || 'Failed to send signin');
     },
   });
 
@@ -115,7 +116,7 @@ export default function LoginPage() {
       router.push('/dashboard');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to accept invitation');
+      toast.error(getErrorMessage(error) || 'Failed to accept invitation');
     },
   });
 

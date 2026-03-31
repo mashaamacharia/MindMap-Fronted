@@ -31,7 +31,7 @@ export default function ProjectsPage() {
   // Client-side filtering (API would handle this in production)
   const filteredData = data ? {
     ...data,
-    results: data.results.filter((project) => {
+    items: data.items.filter((project) => {
       const matchesSearch = !search || 
         project.title.toLowerCase().includes(search.toLowerCase()) ||
         (project.description?.toLowerCase().includes(search.toLowerCase()));
@@ -105,7 +105,7 @@ export default function ProjectsPage() {
             onPageChange={setPage}
           />
           <div className="text-caption text-muted">
-            Showing {data.results.length} of {data.total} projects
+            Showing {data.items.length} of {data.total} projects
           </div>
         </div>
       )}

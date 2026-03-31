@@ -22,7 +22,7 @@ function getStatusBadge(status: ArtifactStatus) {
           Approved
         </Badge>
       );
-    case 'generating':
+    case 'processing':
       return (
         <Badge variant="secondary">
           <Loader2 className="h-3 w-3 mr-1 animate-spin" />
@@ -84,7 +84,7 @@ export default function ArtifactsPage() {
   const { data, isLoading } = useArtifacts(page, 20);
 
   // Filter artifacts by status and search
-  const filteredArtifacts = data?.results?.filter((artifact) => {
+  const filteredArtifacts = data?.items?.filter((artifact) => {
     const matchesStatus = statusFilter === 'all' || artifact.status === statusFilter;
     const matchesSearch =
       !search ||
@@ -147,7 +147,7 @@ export default function ArtifactsPage() {
             </div>
 
             {/* Pagination */}
-            {data && data.count > 20 && (
+            {data && data.total > 20 && (
               <div className="flex items-center justify-center gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -157,11 +157,11 @@ export default function ArtifactsPage() {
                   Previous
                 </button>
                 <span className="text-sm text-muted">
-                  Page {page} of {Math.ceil(data.count / 20)}
+                  Page {page} of {Math.ceil(data.total / 20)}
                 </span>
                 <button
                   onClick={() => setPage((p) => p + 1)}
-                  disabled={page >= Math.ceil(data.count / 20)}
+                  disabled={page >= Math.ceil(data.total / 20)}
                   className="px-3 py-1 text-sm border rounded disabled:opacity-50"
                 >
                   Next

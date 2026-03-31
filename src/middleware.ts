@@ -56,7 +56,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect authenticated users away from auth pages (except complete-profile)
   if (isAuthenticated && isAuthRoute && pathname !== '/auth/complete-profile') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/analyze', request.url));
   }
 
   // Allow auth routes for unauthenticated users

@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api/axios';
 import { MagicLinkHandler } from '@/components/auth';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -80,7 +81,7 @@ export default function MagicLinkPage() {
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to select organisation');
+      toast.error(getErrorMessage(error) || 'Failed to select organisation');
     },
   });
 

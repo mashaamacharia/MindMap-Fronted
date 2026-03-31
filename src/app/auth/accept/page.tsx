@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api/axios';
 import { AcceptInvitationForm } from '@/components/auth';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -62,7 +63,7 @@ export default function AcceptInvitationPage() {
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to accept invitation');
+      toast.error(getErrorMessage(error) || 'Failed to accept invitation');
     },
   });
 

@@ -152,8 +152,33 @@ export function getErrorMessage(error: unknown): string {
         return apiError.message;
       }
     }
-    // Fallback to status text
-    return error.response?.statusText || error.message;
+    // Map common HTTP statuses to friendly messages when the API
+    // didn't provide a clear human-facing message.
+    const status = error.response?.status;
+    if (status) {
+      switch (status) {
+        case 400:
+          return error.response?.statusText || 'Bad request. Please check your input.';
+        case 401:
+          return 'Please sign in to continue.';
+        case 403:
+          return "You don't have permission to perform this action.";
+        case 404:
+          return 'Requested resource not found.';
+        case 429:
+          return "You're making requests too quickly. Please wait a moment and try again.";
+        case 500:
+        case 502:
+        case 503:
+        case 504:
+          return 'Something went wrong on our side. Please try again later.';
+        default:
+          return error.response?.statusText || error.message;
+      }
+    }
+
+    // No HTTP status (likely a network error)
+    return 'Network error. Please check your internet connection and try again.';
   }
   if (error instanceof Error) {
     return error.message;

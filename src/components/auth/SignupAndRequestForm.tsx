@@ -91,13 +91,7 @@ export function SignupAndRequestForm({
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         {error && (
-          <ErrorMessage
-            message={
-              error instanceof Error
-                ? error.message
-                : 'Failed to submit request. Please try again.'
-            }
-          />
+          <ErrorMessage error={error ?? 'Failed to submit request. Please try again.'} />
         )}
 
         {/* Personal Info */}
@@ -116,7 +110,7 @@ export function SignupAndRequestForm({
               disabled={isLoading}
             />
             {errors.full_name && (
-              <p className="text-caption text-red-600">{errors.full_name.message}</p>
+              <p className="text-caption text-destructive">{errors.full_name.message}</p>
             )}
           </div>
 
@@ -142,7 +136,7 @@ export function SignupAndRequestForm({
               disabled={isLoading}
             />
             {errors.job_title && (
-              <p className="text-caption text-red-600">{errors.job_title.message}</p>
+              <p className="text-caption text-destructive">{errors.job_title.message}</p>
             )}
           </div>
 
@@ -167,7 +161,7 @@ export function SignupAndRequestForm({
                 </SelectContent>
               </Select>
               {errors.seniority_level && (
-                <p className="text-caption text-red-600">{errors.seniority_level.message}</p>
+                <p className="text-caption text-destructive">{errors.seniority_level.message}</p>
               )}
             </div>
 
@@ -191,7 +185,7 @@ export function SignupAndRequestForm({
                 </SelectContent>
               </Select>
               {errors.primary_function && (
-                <p className="text-caption text-red-600">{errors.primary_function.message}</p>
+                <p className="text-caption text-destructive">{errors.primary_function.message}</p>
               )}
             </div>
           </div>
@@ -207,7 +201,7 @@ export function SignupAndRequestForm({
               disabled={isLoading}
             />
             {errors.location && (
-              <p className="text-caption text-red-600">{errors.location.message}</p>
+              <p className="text-caption text-destructive">{errors.location.message}</p>
             )}
           </div>
 

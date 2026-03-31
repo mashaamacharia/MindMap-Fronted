@@ -113,7 +113,7 @@ function CommentItem({
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     onClick={() => onDelete(comment.id)}
-                    className="text-red-600 focus:text-red-600"
+                    className="text-destructive focus:text-destructive"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
                     Delete
@@ -243,15 +243,15 @@ export function CommentList({ artifactId }: CommentListProps) {
       </form>
 
       {/* Comments list */}
-      {data?.results?.length ? (
+      {data?.items?.length ? (
         <div className="space-y-3">
           <h3 className="text-sm font-medium text-muted flex items-center gap-2">
             <MessageSquare className="h-4 w-4" strokeWidth={1.5} />
-            {data.count} {data.count === 1 ? 'comment' : 'comments'}
+            {data.total} {data.total === 1 ? 'comment' : 'comments'}
           </h3>
           
           <div className="space-y-2">
-            {data.results.map((comment) => (
+            {data.items.map((comment: CommentRead) => (
               <CommentItem
                 key={comment.id}
                 comment={comment}
@@ -265,7 +265,7 @@ export function CommentList({ artifactId }: CommentListProps) {
           </div>
 
           {/* Pagination */}
-          {data.count > 20 && (
+          {data.total > 20 && (
             <div className="flex items-center justify-center gap-2 pt-4">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -275,11 +275,11 @@ export function CommentList({ artifactId }: CommentListProps) {
                 Previous
               </button>
               <span className="text-sm text-muted">
-                Page {page} of {Math.ceil(data.count / 20)}
+                Page {page} of {Math.ceil(data.total / 20)}
               </span>
               <button
                 onClick={() => setPage((p) => p + 1)}
-                disabled={page >= Math.ceil(data.count / 20)}
+                disabled={page >= Math.ceil(data.total / 20)}
                 className="px-3 py-1 text-sm border rounded disabled:opacity-50"
               >
                 Next
@@ -334,10 +334,7 @@ export function CommentList({ artifactId }: CommentListProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700"
-            >
+            <AlertDialogAction onClick={handleDelete} className="text-destructive">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

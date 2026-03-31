@@ -48,7 +48,7 @@ export function useUpdateProfile() {
 /**
  * Hook to complete user profile
  */
-export function useCompleteProfile() {
+export function useCompleteProfileLocal() {
   const queryClient = useQueryClient();
   const { setUser } = useAuthStore.getState();
 
@@ -65,12 +65,12 @@ export function useCompleteProfile() {
  * Hook to delete current user account
  */
 export function useDeleteAccount() {
-  const { logout } = useAuthStore.getState();
+  const { clearAuth } = useAuthStore.getState();
 
   return useMutation({
     mutationFn: () => usersApi.deleteUserMe(),
     onSuccess: () => {
-      logout();
+      clearAuth();
     },
   });
 }

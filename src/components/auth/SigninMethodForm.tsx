@@ -49,13 +49,7 @@ export function SigninMethodForm({
       </div>
 
       {error && (
-        <ErrorMessage
-          message={
-            error instanceof Error
-              ? error.message
-              : 'Failed to send signin. Please try again.'
-          }
-        />
+        <ErrorMessage error={error ?? 'Failed to send signin. Please try again.'} />
       )}
 
       <div className="space-y-3">

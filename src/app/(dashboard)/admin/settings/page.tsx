@@ -106,7 +106,7 @@ export default function OrgSettingsPage() {
                 aria-invalid={!!errors.name}
               />
               {errors.name && (
-                <p className="text-sm text-red-600">{errors.name.message}</p>
+                <p className="text-sm text-destructive">{errors.name.message}</p>
               )}
             </div>
 
@@ -119,7 +119,7 @@ export default function OrgSettingsPage() {
                 aria-invalid={!!errors.industry}
               />
               {errors.industry && (
-                <p className="text-sm text-red-600">{errors.industry.message}</p>
+                <p className="text-sm text-destructive">{errors.industry.message}</p>
               )}
             </div>
 
@@ -132,7 +132,7 @@ export default function OrgSettingsPage() {
                 aria-invalid={!!errors.hq_location}
               />
               {errors.hq_location && (
-                <p className="text-sm text-red-600">{errors.hq_location.message}</p>
+                <p className="text-sm text-destructive">{errors.hq_location.message}</p>
               )}
             </div>
 

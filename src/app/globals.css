@@ -225,6 +225,19 @@
     font-weight: 500;
   }
 
+  /* Semantic destructive utilities (use design tokens, not raw red) */
+  .text-destructive {
+    color: var(--color-destructive) !important;
+  }
+
+  .text-destructive-foreground {
+    color: var(--color-destructive-foreground) !important;
+  }
+
+  .bg-destructive-50 {
+    background-color: rgba(var(--destructive), 0.06) !important;
+  }
+
   /* text-body-lg: 18px/28px, 400 weight */
   .text-body-lg {
     font-size: 18px;

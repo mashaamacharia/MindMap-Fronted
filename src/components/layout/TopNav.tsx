@@ -113,7 +113,7 @@ export function TopNav({ className }: TopNavProps) {
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/settings" className="flex items-center gap-2">
+            <Link href="/settings/profile" className="flex items-center gap-2">
               <User className="h-4 w-4" strokeWidth={1.5} />
               Profile
             </Link>

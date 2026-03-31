@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useCreateProject } from '@/lib/hooks';
 import type { ProjectCreateInput } from '@/lib/schemas';
-import { ProjectForm } from './project-form';
+import { ProjectForm } from './CreateProjectForm';
 import {
   Dialog,
   DialogContent,

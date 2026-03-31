@@ -118,7 +118,7 @@ export default function SettingsPage() {
                   aria-invalid={!!errors.full_name}
                 />
                 {errors.full_name && (
-                  <p className="text-sm text-red-600">{errors.full_name.message}</p>
+                  <p className="text-sm text-destructive">{errors.full_name.message}</p>
                 )}
               </div>
 
@@ -131,7 +131,7 @@ export default function SettingsPage() {
                   aria-invalid={!!errors.job_title}
                 />
                 {errors.job_title && (
-                  <p className="text-sm text-red-600">{errors.job_title.message}</p>
+                  <p className="text-sm text-destructive">{errors.job_title.message}</p>
                 )}
               </div>
 
@@ -144,7 +144,7 @@ export default function SettingsPage() {
                   aria-invalid={!!errors.location}
                 />
                 {errors.location && (
-                  <p className="text-sm text-red-600">{errors.location.message}</p>
+                  <p className="text-sm text-destructive">{errors.location.message}</p>
                 )}
               </div>
 
@@ -259,7 +259,7 @@ export default function SettingsPage() {
             <Separator />
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-red-600">Delete account</p>
+                <p className="text-sm font-medium text-destructive">Delete account</p>
                 <p className="text-xs text-muted">
                   Permanently delete your account and all data
                 </p>

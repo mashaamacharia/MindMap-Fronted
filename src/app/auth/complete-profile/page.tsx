@@ -9,6 +9,7 @@
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api/axios';
 import { CompleteProfileForm } from '@/components/auth';
 import { useAuthStore } from '@/lib/stores';
 import { useMe } from '@/lib/hooks';
@@ -32,7 +33,7 @@ export default function CompleteProfilePage() {
       router.push('/dashboard');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to update profile');
+      toast.error(getErrorMessage(error) || 'Failed to update profile');
     },
   });
 

@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { FolderKanban, Plus } from 'lucide-react';
 import type { ProjectRead, ProjectSummary, PaginatedResponse } from '@/lib/types';
 import { useDeleteProject, useArchiveProject, useUnarchiveProject, useDuplicateProject } from '@/lib/hooks';
-import { ProjectCard } from './project-card';
+import { ProjectCard } from './ProjectCard';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -94,7 +94,7 @@ export function ProjectList({
     );
   }
 
-  if (!data?.results?.length) {
+  if (!data?.items?.length) {
     return (
       <EmptyState
         icon={FolderKanban}
@@ -115,7 +115,7 @@ export function ProjectList({
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {data.results.map((project) => (
+        {data.items.map((project: ProjectItem) => (
           <ProjectCard
             key={project.id}
             project={project}

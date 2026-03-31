@@ -95,13 +95,7 @@ export function SignupForm({
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {error && (
-        <ErrorMessage
-          message={
-            error instanceof Error
-              ? error.message
-              : 'Failed to create account. Please try again.'
-          }
-        />
+        <ErrorMessage error={error ?? 'Failed to create account. Please try again.'} />
       )}
 
       {/* Personal Info */}
@@ -120,7 +114,7 @@ export function SignupForm({
             disabled={isLoading}
           />
           {errors.full_name && (
-            <p className="text-caption text-red-600">{errors.full_name.message}</p>
+            <p className="text-caption text-destructive">{errors.full_name.message}</p>
           )}
         </div>
 
@@ -145,8 +139,8 @@ export function SignupForm({
             aria-invalid={!!errors.job_title}
             disabled={isLoading}
           />
-          {errors.job_title && (
-            <p className="text-caption text-red-600">{errors.job_title.message}</p>
+            {errors.job_title && (
+            <p className="text-caption text-destructive">{errors.job_title.message}</p>
           )}
         </div>
 
@@ -169,7 +163,7 @@ export function SignupForm({
               </SelectContent>
             </Select>
             {errors.seniority_level && (
-              <p className="text-caption text-red-600">{errors.seniority_level.message}</p>
+              <p className="text-caption text-destructive">{errors.seniority_level.message}</p>
             )}
           </div>
 
@@ -191,7 +185,7 @@ export function SignupForm({
               </SelectContent>
             </Select>
             {errors.primary_function && (
-              <p className="text-caption text-red-600">{errors.primary_function.message}</p>
+              <p className="text-caption text-destructive">{errors.primary_function.message}</p>
             )}
           </div>
         </div>
@@ -207,7 +201,7 @@ export function SignupForm({
             disabled={isLoading}
           />
           {errors.location && (
-            <p className="text-caption text-red-600">{errors.location.message}</p>
+            <p className="text-caption text-destructive">{errors.location.message}</p>
           )}
         </div>
       </div>
@@ -229,7 +223,7 @@ export function SignupForm({
             disabled={isLoading}
           />
           {errors.org_name && (
-            <p className="text-caption text-red-600">{errors.org_name.message}</p>
+            <p className="text-caption text-destructive">{errors.org_name.message}</p>
           )}
         </div>
 
@@ -248,7 +242,7 @@ export function SignupForm({
             />
           </div>
           {errors.org_slug && (
-            <p className="text-caption text-red-600">{errors.org_slug.message}</p>
+            <p className="text-caption text-destructive">{errors.org_slug.message}</p>
           )}
         </div>
 
@@ -263,7 +257,7 @@ export function SignupForm({
             disabled={isLoading}
           />
           {errors.org_industry && (
-            <p className="text-caption text-red-600">{errors.org_industry.message}</p>
+            <p className="text-caption text-destructive">{errors.org_industry.message}</p>
           )}
         </div>
 
@@ -286,7 +280,7 @@ export function SignupForm({
               </SelectContent>
             </Select>
             {errors.org_size_category && (
-              <p className="text-caption text-red-600">{errors.org_size_category.message}</p>
+              <p className="text-caption text-destructive">{errors.org_size_category.message}</p>
             )}
           </div>
 
@@ -308,7 +302,7 @@ export function SignupForm({
               </SelectContent>
             </Select>
             {errors.org_primary_market && (
-              <p className="text-caption text-red-600">{errors.org_primary_market.message}</p>
+              <p className="text-caption text-destructive">{errors.org_primary_market.message}</p>
             )}
           </div>
         </div>
@@ -324,7 +318,7 @@ export function SignupForm({
             disabled={isLoading}
           />
           {errors.org_hq_location && (
-            <p className="text-caption text-red-600">{errors.org_hq_location.message}</p>
+            <p className="text-caption text-destructive">{errors.org_hq_location.message}</p>
           )}
         </div>
       </div>

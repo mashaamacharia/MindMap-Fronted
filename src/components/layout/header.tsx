@@ -154,7 +154,7 @@ export function Header({ onMenuClick, showMenuButton = false }: HeaderProps) {
             <DropdownMenuItem
               onClick={handleLogout}
               disabled={logout.isPending}
-              className="flex items-center gap-2 text-red-600 focus:text-red-600"
+              className="flex items-center gap-2 text-destructive focus:text-destructive"
             >
               <LogOut className="h-4 w-4" strokeWidth={1.5} />
               {logout.isPending ? 'Signing out...' : 'Sign out'}

@@ -66,9 +66,7 @@ export default function ProjectDetailPage({
   const archiveProject = useArchiveProject();
 
   // Filter challenges for this project
-  const projectChallenges = challenges?.results.filter(
-    (c) => c.project_id === projectId
-  ) || [];
+  const projectChallenges = challenges?.items.filter((c) => c.project_id === projectId) || [];
 
   const handleDelete = async () => {
     try {

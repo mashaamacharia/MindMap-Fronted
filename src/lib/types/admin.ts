@@ -6,6 +6,9 @@
 import type { UserRead } from './user';
 import type { OrgRole } from './roles';
 
+/** Alias so admin API can import `User` directly */
+export type User = UserRead;
+
 export interface AdminUserListParams {
   page?: number;
   limit?: number;
@@ -19,14 +22,13 @@ export interface AdminUserListParams {
 export interface AdminUserUpdate {
   role?: OrgRole;
   is_active?: boolean;
-  first_name?: string;
-  last_name?: string;
+  full_name?: string;
+  job_title?: string;
 }
 
 export interface AdminUserCreate {
   email: string;
-  first_name: string;
-  last_name: string;
+  full_name: string;
   role: OrgRole;
 }
 
@@ -48,16 +50,20 @@ export interface DailyActivity {
   artifacts_generated: number;
 }
 
+/** Audit log entry returned by the admin audit-logs endpoint */
 export interface AuditLogEntry {
   id: string;
-  user_id: string;
+  org_id?: string;
+  user_id: string | null;
   action: string;
-  resource_type: string;
-  resource_id?: string;
+  resource_type: string | null;
+  resource_id: string | null;
+  metadata?: Record<string, unknown> | null;
   details?: Record<string, unknown>;
   ip_address?: string;
   user_agent?: string;
   created_at: string;
+  user_name?: string | null;
   user?: Pick<UserRead, 'id' | 'email' | 'full_name'>;
 }
 

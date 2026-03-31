@@ -75,7 +75,7 @@ export default function KnowledgePage() {
   });
 
   // Filter by search locally (API might not support search)
-  const filteredItems = data?.results?.filter((item) => {
+  const filteredItems = data?.items?.filter((item) => {
     if (!search) return true;
     const searchLower = search.toLowerCase();
     return (
@@ -148,7 +148,7 @@ export default function KnowledgePage() {
             </div>
 
             {/* Pagination */}
-            {data && data.count > 12 && (
+            {data && data.total > 12 && (
               <div className="flex items-center justify-center gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -158,11 +158,11 @@ export default function KnowledgePage() {
                   Previous
                 </button>
                 <span className="text-sm text-muted">
-                  Page {page} of {Math.ceil(data.count / 12)}
+                  Page {page} of {Math.ceil(data.total / 12)}
                 </span>
                 <button
                   onClick={() => setPage((p) => p + 1)}
-                  disabled={page >= Math.ceil(data.count / 12)}
+                  disabled={page >= Math.ceil(data.total / 12)}
                   className="px-3 py-1 text-sm border rounded disabled:opacity-50"
                 >
                   Next

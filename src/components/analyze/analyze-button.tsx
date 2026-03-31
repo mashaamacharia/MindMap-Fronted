@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Zap } from 'lucide-react';
-import { useAnalyzeChallenge } from '@/lib/hooks';
+import { useAnalyze } from '@/lib/hooks';
 import { Button } from '@/components/ui/Button';
 import {
   Dialog,
@@ -25,7 +25,7 @@ export function AnalyzeButton({ challengeId, disabled }: AnalyzeButtonProps) {
   const [showDialog, setShowDialog] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const analyzeChallenge = useAnalyzeChallenge();
+  const analyzeChallenge = useAnalyze();
 
   const handleAnalyze = async () => {
     setShowDialog(true);

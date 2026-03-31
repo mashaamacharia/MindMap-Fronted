@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { useCreateProject } from '@/lib/hooks';
-import type { CreateProjectInput } from '@/lib/schemas';
+import type { ProjectCreateInput } from '@/lib/schemas';
 import { ProjectForm } from '@/components/projects';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -13,7 +13,7 @@ export default function NewProjectPage() {
   const router = useRouter();
   const createProject = useCreateProject();
 
-  const handleSubmit = async (data: CreateProjectInput) => {
+  const handleSubmit = async (data: ProjectCreateInput) => {
     const project = await createProject.mutateAsync(data);
     router.push(`/projects/${project.id}`);
   };

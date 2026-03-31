@@ -15,11 +15,13 @@ import { EmptyState } from '@/components/ui/EmptyState';
 export default function ChallengesPage() {
   const [search, setSearch] = useState('');
 
-  const { data, isLoading } = useChallenges({
-    page: 1,
-    page_size: 20,
-    search: search || undefined,
-  });
+  // Hook expects (page, limit)
+  const { data, isLoading } = useChallenges(1, 20);
+
+  // Apply client-side search against the returned items
+  const filtered = data?.items?.filter((c) =>
+    !search || c.raw_text.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="p-4 lg:p-6">
@@ -64,28 +66,25 @@ export default function ChallengesPage() {
               <Skeleton key={i} className="h-32" />
             ))}
           </div>
-        ) : data?.results?.length ? (
+        ) : filtered?.length ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {data.results.map((challenge) => (
+            {filtered.map((challenge) => (
               <Link key={challenge.id} href={`/challenges/${challenge.id}`}>
                 <Card className="h-full transition-colors hover:border-charcoal">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="font-medium text-ink line-clamp-2">
-                        {challenge.title}
+                        {challenge.raw_text}
                       </h3>
-                      <Badge variant="secondary" className="shrink-0">
-                        {challenge.status}
-                      </Badge>
                     </div>
-                    {challenge.problem_statement && (
+                    {challenge.raw_text && (
                       <p className="mt-2 text-sm text-muted line-clamp-2">
-                        {challenge.problem_statement}
+                        {challenge.raw_text}
                       </p>
                     )}
                     <p className="mt-3 text-xs text-muted flex items-center gap-1">
                       <Clock className="h-3 w-3" strokeWidth={1.5} />
-                      {formatRelativeDate(challenge.updated_at)}
+                      {formatRelativeDate(challenge.created_at)}
                     </p>
                   </CardContent>
                 </Card>

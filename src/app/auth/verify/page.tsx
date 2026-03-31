@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/api/axios';
 import { OtpForm } from '@/components/auth';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -67,7 +68,7 @@ export default function VerifyPage() {
       if (!user.profile_completed) {
         router.push('/auth/complete-profile');
       } else {
-        router.push('/dashboard');
+        router.push('/analyze');
       }
     } catch (error) {
       toast.error('Failed to complete sign in');
@@ -100,7 +101,7 @@ export default function VerifyPage() {
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Invalid code');
+      toast.error(getErrorMessage(error) || 'Invalid code');
     },
   });
 
@@ -111,7 +112,7 @@ export default function VerifyPage() {
       toast.success('Code sent! Check your email.');
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to resend code');
+      toast.error(getErrorMessage(error) || 'Failed to resend code');
     },
   });
 
@@ -122,7 +123,7 @@ export default function VerifyPage() {
       await handleAuthSuccess(response.access_token, response.refresh_token);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to select organisation');
+      toast.error(getErrorMessage(error) || 'Failed to select organisation');
     },
   });
 

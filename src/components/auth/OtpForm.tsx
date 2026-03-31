@@ -94,13 +94,7 @@ export function OtpForm({
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         {error && (
-          <ErrorMessage
-            message={
-              error instanceof Error
-                ? error.message
-                : 'Invalid code. Please try again.'
-            }
-          />
+          <ErrorMessage error={error ?? 'Invalid code. Please try again.'} />
         )}
 
         <div className="space-y-2">
@@ -120,7 +114,7 @@ export function OtpForm({
             className="text-center text-h3 tracking-widest"
           />
           {errors.code && (
-            <p className="text-caption text-red-600 text-center">
+            <p className="text-caption text-destructive text-center">
               {errors.code.message}
             </p>
           )}

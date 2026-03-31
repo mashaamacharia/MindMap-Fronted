@@ -161,7 +161,7 @@ export function KnowledgeEditor() {
                       placeholder="Knowledge item title"
                     />
                     {errors.title && (
-                      <p className="text-sm text-red-600">{errors.title.message}</p>
+                      <p className="text-sm text-destructive">{errors.title.message}</p>
                     )}
                   </div>
                   <div className="space-y-2">
@@ -182,7 +182,7 @@ export function KnowledgeEditor() {
                       </SelectContent>
                     </Select>
                     {errors.domain_id && (
-                      <p className="text-sm text-red-600">{errors.domain_id.message}</p>
+                      <p className="text-sm text-destructive">{errors.domain_id.message}</p>
                     )}
                   </div>
                   <div className="space-y-2">
@@ -194,7 +194,7 @@ export function KnowledgeEditor() {
                       rows={2}
                     />
                     {errors.summary && (
-                      <p className="text-sm text-red-600">{errors.summary.message}</p>
+                      <p className="text-sm text-destructive">{errors.summary.message}</p>
                     )}
                   </div>
                   <div className="space-y-2">
@@ -206,7 +206,7 @@ export function KnowledgeEditor() {
                       rows={8}
                     />
                     {errors.body && (
-                      <p className="text-sm text-red-600">{errors.body.message}</p>
+                      <p className="text-sm text-destructive">{errors.body.message}</p>
                     )}
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export function KnowledgeEditor() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-red-600 hover:text-red-700"
+                        className="h-8 w-8 text-destructive hover:text-destructive"
                         onClick={() => setItemToDelete(item)}
                       >
                         <Trash2 className="h-4 w-4" strokeWidth={1.5} />

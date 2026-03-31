@@ -18,7 +18,7 @@ import { Spinner } from '@/components/ui/Spinner';
 
 interface ProjectFormProps {
   project?: ProjectRead;
-  onSubmit: (data: ProjectCreateInput | ProjectUpdateInput) => void;
+  onSubmit: (data: any) => void;
   onCancel: () => void;
   isLoading?: boolean;
   error?: Error | null;
@@ -49,9 +49,7 @@ export function ProjectForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {error && (
-        <ErrorMessage
-          message={error.message || 'Failed to save project. Please try again.'}
-        />
+        <ErrorMessage error={error ?? 'Failed to save project. Please try again.'} />
       )}
 
       <div className="space-y-4">
@@ -65,7 +63,7 @@ export function ProjectForm({
             disabled={isLoading}
           />
           {errors.title && (
-            <p className="text-caption text-red-600">{errors.title.message}</p>
+            <p className="text-caption text-destructive">{errors.title.message}</p>
           )}
         </div>
 
@@ -80,7 +78,7 @@ export function ProjectForm({
             disabled={isLoading}
           />
           {errors.description && (
-            <p className="text-caption text-red-600">{errors.description.message}</p>
+            <p className="text-caption text-destructive">{errors.description.message}</p>
           )}
         </div>
       </div>

@@ -176,7 +176,7 @@ export function MemberTable() {
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             onClick={() => setMemberToRemove(member)}
-                            className="text-red-600 focus:text-red-600"
+                            className="text-destructive focus:text-destructive"
                           >
                             <UserMinus className="mr-2 h-4 w-4" strokeWidth={1.5} />
                             Remove member

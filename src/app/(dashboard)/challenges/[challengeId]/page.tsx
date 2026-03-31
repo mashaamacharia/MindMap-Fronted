@@ -39,11 +39,11 @@ export default function ChallengeDetailPage({
 
   const { data: challenge, isLoading: challengeLoading } =
     useChallenge(challengeId);
-  const { data: artifacts, isLoading: artifactsLoading } = useArtifacts({
-    challenge_id: challengeId,
-    page: 1,
-    page_size: 20,
-  });
+  const { data: artifacts, isLoading: artifactsLoading } = useArtifacts(
+    1,
+    20,
+    { challenge_id: challengeId }
+  );
   const deleteChallenge = useDeleteChallenge();
 
   const handleDelete = async () => {
@@ -97,21 +97,17 @@ export default function ChallengeDetailPage({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-light tracking-tight text-ink truncate">
-                  {challenge.title}
+                  {challenge.raw_text}
                 </h1>
-                <Badge variant="outline">{challenge.status}</Badge>
               </div>
               <p className="mt-1 text-sm text-muted flex items-center gap-1">
                 <Clock className="h-3 w-3" strokeWidth={1.5} />
-                Updated {formatRelativeDate(challenge.updated_at)}
+                Created {formatRelativeDate(challenge.created_at)}
               </p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <AnalyzeButton
-              challengeId={challengeId}
-              disabled={challenge.status === 'analyzed'}
-            />
+            <AnalyzeButton challengeId={challengeId} />
             <Button asChild variant="outline" size="sm">
               <Link href={`/challenges/${challengeId}/edit`}>
                 <Pencil className="mr-2 h-4 w-4" strokeWidth={1.5} />
@@ -130,13 +126,13 @@ export default function ChallengeDetailPage({
         </div>
 
         {/* Project link */}
-        {challenge.project && (
+        {challenge.project_id && (
           <Link
-            href={`/projects/${challenge.project.id}`}
+            href={`/projects/${challenge.project_id}`}
             className="inline-flex items-center gap-2 text-sm text-charcoal hover:text-ink transition-colors"
           >
             <FolderKanban className="h-4 w-4" strokeWidth={1.5} />
-            {challenge.project.name}
+            Project {challenge.project_id.slice(0, 8)}
           </Link>
         )}
 
@@ -144,33 +140,33 @@ export default function ChallengeDetailPage({
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Problem Statement</CardTitle>
+              <CardTitle className="text-base">Raw Text</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted whitespace-pre-wrap">
-                {challenge.problem_statement || 'No problem statement provided'}
+                {challenge.raw_text || 'No text provided'}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Context</CardTitle>
+              <CardTitle className="text-base">Domain</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted whitespace-pre-wrap">
-                {challenge.context || 'No context provided'}
+                {challenge.domain_title || 'No domain provided'}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Constraints</CardTitle>
+              <CardTitle className="text-base">Metadata</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted whitespace-pre-wrap">
-                {challenge.constraints || 'No constraints provided'}
+                Created by {challenge.creator_name ?? 'Unknown'}
               </p>
             </CardContent>
           </Card>
@@ -199,9 +195,9 @@ export default function ChallengeDetailPage({
                   <Skeleton key={i} className="h-16" />
                 ))}
               </div>
-            ) : artifacts?.results?.length ? (
+            ) : artifacts?.items?.length ? (
               <div className="space-y-3">
-                {artifacts.results.map((artifact) => (
+                {artifacts.items.map((artifact) => (
                   <Link
                     key={artifact.id}
                     href={`/artifacts/${artifact.id}`}
@@ -214,7 +210,7 @@ export default function ChallengeDetailPage({
                       />
                       <div>
                         <p className="text-sm font-medium text-ink">
-                          {artifact.title}
+                          {artifact.content?.title || 'Untitled'}
                         </p>
                         <p className="text-xs text-muted">
                           Generated {formatDate(artifact.created_at)}

@@ -10,3 +10,7 @@ export * from './challenge';
 export * from './comment';
 export * from './organisation';
 export * from './knowledge';
+
+// Backwards-compatible aliases for older consumer names
+export { createProjectSchema as projectCreateSchema, updateProjectSchema as projectUpdateSchema } from './project';
+export type { CreateProjectInput as ProjectCreateInput, UpdateProjectInput as ProjectUpdateInput } from './project';

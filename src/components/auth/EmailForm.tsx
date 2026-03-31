@@ -45,13 +45,7 @@ export function EmailForm({ onSubmit, isLoading, error }: EmailFormProps) {
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {error && (
-        <ErrorMessage
-          message={
-            error instanceof Error
-              ? error.message
-              : 'Something went wrong. Please try again.'
-          }
-        />
+        <ErrorMessage error={error ?? 'Something went wrong. Please try again.'} />
       )}
 
       <div className="space-y-2">
@@ -67,7 +61,7 @@ export function EmailForm({ onSubmit, isLoading, error }: EmailFormProps) {
           disabled={isLoading}
         />
         {errors.email && (
-          <p className="text-caption text-red-600">{errors.email.message}</p>
+          <p className="text-caption text-destructive">{errors.email.message}</p>
         )}
       </div>
 

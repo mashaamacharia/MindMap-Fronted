@@ -107,27 +107,6 @@ export const acceptInvitationSchema = z.object({
 /**
  * Complete profile (required before using AI features)
  */
-export const completeProfileSchema = z.object({
-  job_title: z.string().min(2, 'Job title must be at least 2 characters'),
-  seniority_level: z.enum([
-    'c_suite',
-    'vp_director',
-    'senior_manager',
-    'manager',
-    'individual_contributor',
-  ]),
-  primary_function: z.enum([
-    'strategy',
-    'technology',
-    'finance',
-    'operations',
-    'people',
-    'marketing',
-    'legal',
-  ]),
-  location: z.string().min(2, 'Location must be at least 2 characters'),
-});
-
 // Type exports
 export type EmailInput = z.infer<typeof emailSchema>;
 export type OtpInput = z.infer<typeof otpSchema>;
@@ -135,4 +114,3 @@ export type SigninMethodInput = z.infer<typeof signinMethodSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
 export type SignupAndRequestInput = z.infer<typeof signupAndRequestSchema>;
 export type AcceptInvitationInput = z.infer<typeof acceptInvitationSchema>;
-export type CompleteProfileInput = z.infer<typeof completeProfileSchema>;

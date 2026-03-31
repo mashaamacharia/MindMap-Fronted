@@ -1,2 +1,2 @@
-export { ChallengeForm } from './challenge-form';
+export { ChallengeForm } from './ChallengeForm';
 export { AnalyzeButton } from './analyze-button';

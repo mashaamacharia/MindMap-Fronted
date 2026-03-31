@@ -21,8 +21,8 @@ export default function Error({
       <div className="flex flex-col items-center gap-8 text-center">
         <Wordmark size="lg" />
         
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
-          <AlertCircle className="h-8 w-8 text-red-600" strokeWidth={1.5} />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive-50">
+            <AlertCircle className="h-8 w-8 text-destructive" strokeWidth={1.5} />
         </div>
 
         <div className="space-y-2">

@@ -24,7 +24,7 @@ export default function EditProjectPage({
   const updateProject = useUpdateProject();
 
   const handleSubmit = async (data: UpdateProjectInput) => {
-    await updateProject.mutateAsync({ id: projectId, data });
+    await updateProject.mutateAsync({ projectId, data });
     router.push(`/projects/${projectId}`);
   };
 

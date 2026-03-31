@@ -21,35 +21,26 @@ import { ProfileCompletionBanner } from './profile-completion-banner';
 
 export function DashboardContent() {
   const { user } = useAuthStore();
-  const { data: projectsData, isLoading: projectsLoading } = useProjects({
-    page: 1,
-    page_size: 5,
-  });
-  const { data: challengesData, isLoading: challengesLoading } = useChallenges({
-    page: 1,
-    page_size: 5,
-  });
-  const { data: artifactsData, isLoading: artifactsLoading } = useArtifacts({
-    page: 1,
-    page_size: 5,
-  });
+  const { data: projectsData, isLoading: projectsLoading } = useProjects(1, 5);
+  const { data: challengesData, isLoading: challengesLoading } = useChallenges(1, 5);
+  const { data: artifactsData, isLoading: artifactsLoading } = useArtifacts(1, 5);
 
   const stats = [
     {
       label: 'Active Projects',
-      value: projectsData?.count ?? 0,
+      value: projectsData?.total ?? 0,
       icon: FolderKanban,
       href: '/projects',
     },
     {
       label: 'Open Challenges',
-      value: challengesData?.count ?? 0,
+      value: challengesData?.total ?? 0,
       icon: Lightbulb,
       href: '/challenges',
     },
     {
       label: 'Decision Artifacts',
-      value: artifactsData?.count ?? 0,
+      value: artifactsData?.total ?? 0,
       icon: FileText,
       href: '/artifacts',
     },
@@ -118,9 +109,9 @@ export function DashboardContent() {
                   <Skeleton key={i} className="h-16" />
                 ))}
               </div>
-            ) : projectsData?.results?.length ? (
+            ) : projectsData?.items?.length ? (
               <div className="space-y-3">
-                {projectsData.results.slice(0, 3).map((project) => (
+                {projectsData.items.slice(0, 3).map((project) => (
                   <Link
                     key={project.id}
                     href={`/projects/${project.id}`}
@@ -128,11 +119,11 @@ export function DashboardContent() {
                   >
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-ink">
-                        {project.name}
+                        {project.title}
                       </p>
                       <p className="flex items-center gap-1 text-xs text-muted">
                         <Clock className="h-3 w-3" strokeWidth={1.5} />
-                        {formatRelativeDate(project.updated_at)}
+                        {formatRelativeDate(project.created_at)}
                       </p>
                     </div>
                     <Badge variant="secondary">{project.status}</Badge>
@@ -177,9 +168,9 @@ export function DashboardContent() {
                   <Skeleton key={i} className="h-16" />
                 ))}
               </div>
-            ) : challengesData?.results?.length ? (
+            ) : challengesData?.items?.length ? (
               <div className="space-y-3">
-                {challengesData.results.slice(0, 3).map((challenge) => (
+                {challengesData.items.slice(0, 3).map((challenge) => (
                   <Link
                     key={challenge.id}
                     href={`/challenges/${challenge.id}`}
@@ -187,14 +178,14 @@ export function DashboardContent() {
                   >
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-ink">
-                        {challenge.title}
+                        {challenge.raw_text}
                       </p>
                       <p className="flex items-center gap-1 text-xs text-muted">
                         <Clock className="h-3 w-3" strokeWidth={1.5} />
-                        {formatRelativeDate(challenge.updated_at)}
+                        {formatRelativeDate(challenge.created_at)}
                       </p>
                     </div>
-                    <Badge variant="secondary">{challenge.status}</Badge>
+                    <Badge variant="secondary">{challenge.domain_title ?? 'Domain'}</Badge>
                   </Link>
                 ))}
               </div>
@@ -237,9 +228,9 @@ export function DashboardContent() {
                 <Skeleton key={i} className="h-24" />
               ))}
             </div>
-          ) : artifactsData?.results?.length ? (
+          ) : artifactsData?.items?.length ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {artifactsData.results.slice(0, 3).map((artifact) => (
+              {artifactsData.items.slice(0, 3).map((artifact) => (
                 <Link
                   key={artifact.id}
                   href={`/artifacts/${artifact.id}`}
@@ -252,7 +243,7 @@ export function DashboardContent() {
                     </Badge>
                   </div>
                   <p className="line-clamp-2 text-sm font-medium text-ink">
-                    {artifact.title}
+                    {artifact.content?.title || 'Untitled'}
                   </p>
                   <p className="text-xs text-muted">
                     {formatRelativeDate(artifact.created_at)}
