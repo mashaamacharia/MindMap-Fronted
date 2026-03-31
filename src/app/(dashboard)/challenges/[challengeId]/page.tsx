@@ -39,12 +39,13 @@ export default function ChallengeDetailPage({
 
   const { data: challenge, isLoading: challengeLoading } =
     useChallenge(challengeId);
-  const { data: artifacts, isLoading: artifactsLoading } = useArtifacts(
-    1,
-    20,
-    { challenge_id: challengeId }
-  );
+  const { data: artifacts, isLoading: artifactsLoading } = useArtifacts(1, 10);
   const deleteChallenge = useDeleteChallenge();
+
+  // Filter artifacts to only show those for this challenge
+  const challengeArtifacts = artifacts?.items?.filter(
+    (a) => a.challenge_id === challengeId
+  ) || [];
 
   const handleDelete = async () => {
     await deleteChallenge.mutateAsync(challengeId);
@@ -173,12 +174,25 @@ export default function ChallengeDetailPage({
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Success Criteria</CardTitle>
+              <CardTitle className="text-base">Analysis Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted whitespace-pre-wrap">
-                {challenge.success_criteria || 'No success criteria provided'}
-              </p>
+              <div className="flex items-center gap-2">
+                {challengeArtifacts.length > 0 ? (
+                  <>
+                    <Badge variant="success">
+                      ✓ Analyzed
+                    </Badge>
+                    <p className="text-sm text-muted">
+                      {challengeArtifacts.length} artifact{challengeArtifacts.length !== 1 ? 's' : ''} generated
+                    </p>
+                  </>
+                ) : (
+                  <Badge variant="secondary">
+                    Not yet analyzed
+                  </Badge>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -195,9 +209,9 @@ export default function ChallengeDetailPage({
                   <Skeleton key={i} className="h-16" />
                 ))}
               </div>
-            ) : artifacts?.items?.length ? (
+            ) : challengeArtifacts.length ? (
               <div className="space-y-3">
-                {artifacts.items.map((artifact) => (
+                {challengeArtifacts.map((artifact) => (
                   <Link
                     key={artifact.id}
                     href={`/artifacts/${artifact.id}`}
@@ -238,7 +252,7 @@ export default function ChallengeDetailPage({
           <DialogHeader>
             <DialogTitle>Delete challenge</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete &quot;{challenge.title}&quot;? This
+              Are you sure you want to delete this challenge? This
               action cannot be undone and will also delete all associated
               artifacts.
             </DialogDescription>
