@@ -21,8 +21,7 @@ import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 import { ArrowLeft, Check } from 'lucide-react';
 import * as authApi from '@/lib/api/auth';
-import { getUserMe } from '@/lib/api/users';
-import { getMe } from '@/lib/api/auth';
+import { api } from '@/lib/api/axios';
 import { useAuthStore } from '@/lib/stores';
 import type { DetectPathOrg, VerifyOtpResponse } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -45,10 +44,10 @@ export default function VerifyPage() {
   // Handle successful auth
   const handleAuthSuccess = async (accessToken: string, refreshToken?: string | null) => {
     try {
-      // Fetch user details and auth info
+      // Fetch user details and auth info using the fresh access token
       const [user, authInfo] = await Promise.all([
-        getUserMe(),
-        getMe(),
+        api.get('/users/me', { headers: { Authorization: `Bearer ${accessToken}` } }).then(res => res.data),
+        api.get('/auth/me', { headers: { Authorization: `Bearer ${accessToken}` } }).then(res => res.data),
       ]);
 
       // Set auth state

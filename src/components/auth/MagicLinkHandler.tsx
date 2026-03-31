@@ -9,8 +9,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
-import { verifyMagicLink, getMe } from '@/lib/api/auth';
-import { getUserMe } from '@/lib/api/users';
+import { verifyMagicLink } from '@/lib/api/auth';
+import { api } from '@/lib/api/axios';
 import { useAuthStore } from '@/lib/stores';
 import type { VerifyOtpResponse, DetectPathOrg } from '@/lib/types';
 import { SoundWave } from '@/components/ui/SoundWave';
@@ -56,12 +56,16 @@ export function MagicLinkHandler({
       // Success - has access_token
       if ('access_token' in response) {
         try {
-          // Fetch user details and auth info
+          // Fetch user details and auth info with the new token
           const [user, authInfo] = await Promise.all([
-            getUserMe(),
-            getMe(),
+            api.get('/users/me', {
+              headers: { Authorization: `Bearer ${response.access_token}` }
+            }).then(res => res.data),
+            api.get('/auth/me', {
+              headers: { Authorization: `Bearer ${response.access_token}` }
+            }).then(res => res.data),
           ]);
-          
+
           // Set auth state
           setAuth({
             user,

@@ -16,8 +16,7 @@ import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import * as authApi from '@/lib/api/auth';
-import { getUserMe } from '@/lib/api/users';
-import { getMe } from '@/lib/api/auth';
+import { api } from '@/lib/api/axios';
 import { useAuthStore } from '@/lib/stores';
 import type { DetectPathResponse, AcceptInvitationRequest } from '@/lib/types';
 import type { AcceptInvitationInput } from '@/lib/schemas';
@@ -38,10 +37,10 @@ export default function AcceptInvitationPage() {
     mutationFn: (data: AcceptInvitationInput) => authApi.acceptInvitation(data),
     onSuccess: async (response) => {
       try {
-        // Fetch user details
+        // Fetch user details and auth info using the fresh access token
         const [user, authInfo] = await Promise.all([
-          getUserMe(),
-          getMe(),
+          api.get('/users/me', { headers: { Authorization: `Bearer ${response.access_token}` } }).then(res => res.data),
+          api.get('/auth/me', { headers: { Authorization: `Bearer ${response.access_token}` } }).then(res => res.data),
         ]);
 
         setAuth({

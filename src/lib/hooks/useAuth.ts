@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/authStore';
 import * as authApi from '@/lib/api/auth';
 import * as usersApi from '@/lib/api/users';
+import { api } from '@/lib/api/axios';
 import type { UserUpdate } from '@/lib/types';
 
 export const authKeys = {
@@ -215,10 +216,10 @@ export function useAcceptInvitation() {
   return useMutation({
     mutationFn: authApi.acceptInvitation,
     onSuccess: async (response) => {
-      // Fetch user details and set auth
+      // Fetch user details and set auth using fresh token
       const [user, authInfo] = await Promise.all([
-        usersApi.getUserMe(),
-        authApi.getMe(),
+        api.get('/users/me', { headers: { Authorization: `Bearer ${response.access_token}` } }).then(res => res.data),
+        api.get('/auth/me', { headers: { Authorization: `Bearer ${response.access_token}` } }).then(res => res.data),
       ]);
 
       setAuth({
