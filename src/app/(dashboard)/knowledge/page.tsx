@@ -71,7 +71,7 @@ export default function KnowledgePage() {
   const { data, isLoading } = useKnowledge({
     domain_code: domainFilter !== 'all' ? domainFilter : undefined,
     page,
-    limit: 12,
+    limit: 8,
   });
 
   // Filter by search locally (API might not support search)
@@ -148,7 +148,7 @@ export default function KnowledgePage() {
             </div>
 
             {/* Pagination */}
-            {data && data.total > 12 && (
+            {data && data.total > 8 && (
               <div className="flex items-center justify-center gap-2">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -158,11 +158,11 @@ export default function KnowledgePage() {
                   Previous
                 </button>
                 <span className="text-sm text-muted">
-                  Page {page} of {Math.ceil(data.total / 12)}
+                  Page {page} of {Math.ceil(data.total / 8)}
                 </span>
                 <button
                   onClick={() => setPage((p) => p + 1)}
-                  disabled={page >= Math.ceil(data.total / 12)}
+                  disabled={page >= Math.ceil(data.total / 8)}
                   className="px-3 py-1 text-sm border rounded disabled:opacity-50"
                 >
                   Next
