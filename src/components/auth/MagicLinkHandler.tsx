@@ -10,13 +10,16 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { verifyMagicLink } from '@/lib/api/auth';
-import { api } from '@/lib/api/axios';
+import { api, getErrorMessage } from '@/lib/api/axios';
+import axios from 'axios';
+import * as authApi from '@/lib/api/auth';
 import { useAuthStore } from '@/lib/stores';
 import type { VerifyOtpResponse, DetectPathOrg } from '@/lib/types';
 import { SoundWave } from '@/components/ui/SoundWave';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Spinner } from '@/components/ui/Spinner';
 
 interface MagicLinkHandlerProps {
   onOrgSelection?: (orgs: DetectPathOrg[], tempToken: string) => void;
@@ -36,9 +39,14 @@ export function MagicLinkHandler({
   const token = searchParams.get('token');
   const { setAuth } = useAuthStore();
   const [error, setError] = useState<Error | null>(null);
+  const [stage, setStage] = useState<'verifying' | 'almost' | 'redirecting' | 'idle'>('verifying');
+  const [errorCode, setErrorCode] = useState<number | null>(null);
 
   const verifyMutation = useMutation({
     mutationFn: (token: string) => verifyMagicLink(token),
+    onMutate: () => {
+      setStage('verifying');
+    },
     onSuccess: async (response: VerifyOtpResponse) => {
       // Check response type
       if ('requires_org_selection' in response && response.requires_org_selection) {
@@ -56,7 +64,8 @@ export function MagicLinkHandler({
       // Success - has access_token
       if ('access_token' in response) {
         try {
-          // Fetch user details and auth info with the new token
+          // indicate we're finishing up, then fetch user details and auth info with the new token
+          setStage('almost');
           const [user, authInfo] = await Promise.all([
             api.get('/users/me', {
               headers: { Authorization: `Bearer ${response.access_token}` }
@@ -80,18 +89,26 @@ export function MagicLinkHandler({
           });
 
           // Redirect based on profile completion
+          setStage('redirecting');
           if (!user.profile_completed) {
-            router.push('/auth/complete-profile');
+            await router.push('/auth/complete-profile');
           } else {
-            router.push('/dashboard');
+            await router.push('/analyze');
           }
-        } catch {
-          setError(new Error('Failed to complete sign in'));
+          setStage('idle');
+        } catch (err) {
+          const message = getErrorMessage(err);
+          setError(new Error(message));
+          if (axios.isAxiosError(err)) setErrorCode(err.response?.status ?? null);
+          setStage('idle');
         }
       }
     },
-    onError: (error: Error) => {
-      setError(error);
+    onError: (error: unknown) => {
+      const message = getErrorMessage(error);
+      setError(new Error(message));
+      if (axios.isAxiosError(error)) setErrorCode(error.response?.status ?? null);
+      setStage('idle');
     },
   });
 
@@ -117,11 +134,32 @@ export function MagicLinkHandler({
     );
   }
 
-  if (verifyMutation.isPending) {
+  if (stage === 'verifying' || verifyMutation.isPending) {
     return (
       <div className="flex flex-col items-center gap-6 py-12">
         <SoundWave state="thinking" className="w-80 max-w-full" />
         <p className="text-body-md text-muted">Verifying your link...</p>
+      </div>
+    );
+  }
+
+  if (stage === 'almost') {
+    return (
+      <div className="flex flex-col items-center gap-6 py-12">
+        <SoundWave state="thinking" className="w-80 max-w-full" />
+        <div className="flex items-center gap-3">
+          <Spinner size="sm" />
+          <p className="text-body-md text-muted">Almost there — finishing sign in...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (stage === 'redirecting') {
+    return (
+      <div className="flex flex-col items-center gap-6 py-12">
+        <Spinner size="lg" />
+        <p className="text-body-md text-muted">Finalizing sign in ...</p>
       </div>
     );
   }
@@ -132,10 +170,24 @@ export function MagicLinkHandler({
         <ErrorMessage
           error={
             error?.message ||
-            verifyMutation.error?.message ||
+            (verifyMutation.error ? getErrorMessage(verifyMutation.error) : undefined) ||
             'Failed to verify magic link. It may have expired.'
           }
         />
+        {errorCode === 403 && (
+          <div className="mt-4">
+            <p className="text-caption text-muted mb-3">It looks like your email is not verified yet.</p>
+            <Button
+              className="w-full mb-2"
+              onClick={async () => {
+                // redirect user to verify-email page to request a resend
+                router.push('/auth/verify-email');
+              }}
+            >
+              Resend verification email
+            </Button>
+          </div>
+        )}
         <Button
           className="mt-4 w-full"
           onClick={() => router.push('/auth/login')}

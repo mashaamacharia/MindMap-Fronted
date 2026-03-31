@@ -73,7 +73,7 @@ export default function MagicLinkPage() {
         if (!user.profile_completed) {
           router.push('/auth/complete-profile');
         } else {
-          router.push('/dashboard');
+          router.push('/analyze');
         }
       } catch {
         toast.error('Failed to complete sign in');

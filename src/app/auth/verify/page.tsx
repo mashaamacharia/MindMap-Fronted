@@ -16,6 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getErrorMessage } from '@/lib/api/axios';
 import { OtpForm } from '@/components/auth';
+import { MagicLinkHandler } from '@/components/auth/MagicLinkHandler';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
@@ -32,6 +33,7 @@ export default function VerifyPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get('email') || '';
+  const token = searchParams.get('token');
   const purpose = (searchParams.get('purpose') as 'signup' | 'signin') || 'signin';
 
   const { setAuth } = useAuthStore();
@@ -145,6 +147,19 @@ export default function VerifyPage() {
   };
 
   // Render based on current step
+  // If token present, handle magic-link verification via MagicLinkHandler
+  if (token) {
+    return (
+      <MagicLinkHandler
+        onOrgSelection={(orgs, temp) => {
+          setOrgs(orgs);
+          setTempToken(temp);
+          setStep('select_org');
+        }}
+        onPendingApproval={() => setStep('pending_approval')}
+      />
+    );
+  }
   if (!email) {
     return (
       <Card className="p-6 text-center">

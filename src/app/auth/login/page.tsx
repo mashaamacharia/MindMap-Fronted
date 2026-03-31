@@ -25,6 +25,8 @@ import {
   SigninMethodForm,
   AcceptInvitationForm,
 } from '@/components/auth';
+import { Label } from '@/components/ui/Label';
+import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ArrowLeft } from 'lucide-react';
@@ -58,6 +60,11 @@ export default function LoginPage() {
   const [step, setStep] = useState<AuthStep>(token ? 'invited_member' : 'email');
   const [email, setEmail] = useState('');
   const [detectPathData, setDetectPathData] = useState<DetectPathResponse | null>(null);
+  const [ownerChoice, setOwnerChoice] = useState<'choose' | 'create' | 'join'>('choose');
+  const [joinSlug, setJoinSlug] = useState('');
+  const [joinOrg, setJoinOrg] = useState<any | null>(null);
+  const [joinLoading, setJoinLoading] = useState(false);
+  const [joinError, setJoinError] = useState<string | null>(null);
 
   // Detect path mutation
   const detectPathMutation = useMutation({
@@ -154,6 +161,11 @@ export default function LoginPage() {
       case 'email':
         return (
           <div className="space-y-6">
+            <div className="flex items-center justify-start">
+              <Button variant="ghost" size="icon" onClick={() => router.push('/') } aria-label="Back to landing">
+                <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
+              </Button>
+            </div>
             <div className="text-center">
               <h1 className="text-h2 font-semibold text-ink">Sign in to M1NDMAP11</h1>
               <p className="text-body-md text-muted mt-2">
@@ -169,25 +181,84 @@ export default function LoginPage() {
         );
 
       case 'owner_signup':
+        if (ownerChoice === 'choose') {
+          return (
+            <Card className="p-6">
+              <h2 className="text-h3 font-medium mb-2">Create or join an organisation?</h2>
+              <p className="text-body-md text-muted mb-4">It looks like this email is new to M1NDMAP11. Would you like to create a new organisation or request to join an existing one?</p>
+              <div className="flex gap-3">
+                <Button className="flex-1" onClick={() => setOwnerChoice('create')}>Create organisation</Button>
+                <Button variant="ghost" className="flex-1" onClick={() => setOwnerChoice('join')}>Join existing</Button>
+              </div>
+            </Card>
+          );
+        }
+
+        if (ownerChoice === 'create') {
+          return (
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" size="icon" onClick={() => setOwnerChoice('choose')}>
+                  <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
+                </Button>
+                <div>
+                  <h1 className="text-h2 font-semibold text-ink">Create your account</h1>
+                  <p className="text-body-md text-muted">Set up your organisation on M1NDMAP11</p>
+                </div>
+              </div>
+              <SignupForm
+                email={email}
+                onSubmit={handleSignupSubmit}
+                isLoading={signupMutation.isPending}
+                error={signupMutation.error}
+              />
+            </div>
+          );
+        }
+
+        // join flow
         return (
           <div className="space-y-6">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={handleBack}>
+              <Button variant="ghost" size="icon" onClick={() => setOwnerChoice('choose')}>
                 <ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
               </Button>
               <div>
-                <h1 className="text-h2 font-semibold text-ink">Create your account</h1>
-                <p className="text-body-md text-muted">
-                  Set up your organisation on M1NDMAP11
-                </p>
+                <h1 className="text-h2 font-semibold text-ink">Join an organisation</h1>
+                <p className="text-body-md text-muted">Enter the organisation URL slug to request to join.</p>
               </div>
             </div>
-            <SignupForm
-              email={email}
-              onSubmit={handleSignupSubmit}
-              isLoading={signupMutation.isPending}
-              error={signupMutation.error}
-            />
+
+            <div className="space-y-4">
+              <Label htmlFor="org_slug">Organisation URL slug</Label>
+              <Input id="org_slug" value={joinSlug} onChange={(e) => setJoinSlug(e.target.value)} placeholder="example-org" />
+              {joinError && <p className="text-caption text-destructive">{joinError}</p>}
+              <div className="flex gap-3">
+                <Button onClick={async () => {
+                  setJoinLoading(true); setJoinError(null); setJoinOrg(null);
+                  try {
+                    const { getOrgBySlug } = await import('@/lib/api/organisations');
+                    const org = await getOrgBySlug(joinSlug.trim());
+                    setJoinOrg(org);
+                  } catch (err) {
+                    setJoinError(getErrorMessage(err) || 'Organisation not found');
+                  } finally { setJoinLoading(false); }
+                }} disabled={!joinSlug || joinLoading}>
+                  {joinLoading ? 'Looking up...' : 'Find organisation'}
+                </Button>
+                <Button variant="ghost" onClick={() => setOwnerChoice('choose')}>Cancel</Button>
+              </div>
+
+              {joinOrg && (
+                <SignupAndRequestForm
+                  email={email}
+                  org={joinOrg}
+                  onSubmit={handleSignupAndRequestSubmit}
+                  isLoading={signupAndRequestMutation.isPending}
+                  error={signupAndRequestMutation.error}
+                />
+              )}
+            </div>
           </div>
         );
 
