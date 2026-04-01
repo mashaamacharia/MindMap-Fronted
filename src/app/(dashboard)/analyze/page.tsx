@@ -249,8 +249,15 @@ export default function AnalyzePage() {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center justify-center flex-1 px-6 py-16"
             >
-              {/* Wordmark */}
-              <div className="mb-10">
+              {/* Portrait and Wordmark */}
+              <div className="mb-10 flex flex-col items-center">
+                <Image
+                  src="/portrait.png"
+                  alt="Portrait"
+                  width={100}
+                  height={100}
+                  className="rounded-full object-cover mb-2"
+                />
                 <Wordmark size="lg" />
               </div>
 
@@ -398,7 +405,14 @@ export default function AnalyzePage() {
               transition={{ duration: 0.4 }}
               className="flex flex-col items-center justify-center flex-1 px-6 py-16"
             >
-              <div className="mb-6">
+              <div className="mb-6 flex flex-col items-center">
+                <Image
+                  src="/portrait.png"
+                  alt="Portrait"
+                  width={100}
+                  height={100}
+                  className="rounded-full object-cover mb-2"
+                />
                 <Wordmark size="md" />
               </div>
 
@@ -439,7 +453,16 @@ export default function AnalyzePage() {
               {/* Action bar */}
               <div className="max-w-3xl mx-auto mb-8 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <Wordmark size="sm" />
+                  <div className="flex flex-col items-center">
+                    <Image
+                      src="/portrait.png"
+                      alt="Portrait"
+                      width={70}
+                      height={70}
+                      className="rounded-full object-cover mb-1"
+                    />
+                    <Wordmark size="sm" />
+                  </div>
                   <span className="text-muted text-caption">· Analysis complete</span>
                 </div>
 
