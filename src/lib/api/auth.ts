@@ -18,6 +18,8 @@ import type {
   VerifyOtpResponse,
   RequestSigninRequest,
   ResendOtpRequest,
+  RequestVerificationRequest,
+  ResendMagicLinkRequest,
   AcceptInvitationRequest,
   SelectOrgRequest,
   SelectOrgResponse,
@@ -86,6 +88,22 @@ export async function requestSignin(data: RequestSigninRequest): Promise<Generic
  */
 export async function resendOtp(data: ResendOtpRequest): Promise<GenericMessageResponse> {
   const { data: response } = await api.post<GenericMessageResponse>('/auth/resend-otp', data);
+  return response;
+}
+
+/**
+ * Request email verification for unverified users
+ */
+export async function requestVerification(data: RequestVerificationRequest): Promise<GenericMessageResponse> {
+  const { data: response } = await api.post<GenericMessageResponse>('/auth/request-verification', data);
+  return response;
+}
+
+/**
+ * Resend magic link
+ */
+export async function resendMagicLink(data: ResendMagicLinkRequest): Promise<GenericMessageResponse> {
+  const { data: response } = await api.post<GenericMessageResponse>('/auth/resend-magic-link', data);
   return response;
 }
 

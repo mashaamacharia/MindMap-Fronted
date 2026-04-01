@@ -43,12 +43,13 @@ import type {
   AcceptInvitationInput,
 } from '@/lib/schemas';
 
-type AuthStep = 
+type AuthStep =
   | 'email'
   | 'owner_signup'
   | 'returning_user'
   | 'invited_member'
   | 'join_request'
+  | 'unverified_user'
   | 'check_email';
 
 export default function LoginPage() {
@@ -71,6 +72,11 @@ export default function LoginPage() {
     mutationFn: (email: string) => authApi.detectPath({ email }),
     onSuccess: (data) => {
       setDetectPathData(data);
+      if (data.path === 'unverified_user') {
+        // Redirect to verify-email page for unverified users
+        router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`);
+        return;
+      }
       setStep(data.path);
     },
     onError: (error: Error) => {

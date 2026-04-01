@@ -9,10 +9,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { verifyMagicLink } from '@/lib/api/auth';
 import { api, getErrorMessage } from '@/lib/api/axios';
-import axios from 'axios';
-import * as authApi from '@/lib/api/auth';
 import { useAuthStore } from '@/lib/stores';
 import type { VerifyOtpResponse, DetectPathOrg } from '@/lib/types';
 import { SoundWave } from '@/components/ui/SoundWave';
@@ -40,7 +39,6 @@ export function MagicLinkHandler({
   const { setAuth } = useAuthStore();
   const [error, setError] = useState<Error | null>(null);
   const [stage, setStage] = useState<'verifying' | 'almost' | 'redirecting' | 'idle'>('verifying');
-  const [errorCode, setErrorCode] = useState<number | null>(null);
 
   const verifyMutation = useMutation({
     mutationFn: (token: string) => verifyMagicLink(token),
@@ -61,7 +59,18 @@ export function MagicLinkHandler({
         return;
       }
 
-      // Success - has access_token
+      // Check if this is a verification success (no access_token, just success message)
+      if ('message' in response && !('access_token' in response)) {
+        // Email verification successful
+        setStage('idle');
+        toast.success('Email verified successfully! You can now proceed to login.');
+        setTimeout(() => {
+          router.push('/auth/login');
+        }, 2000);
+        return;
+      }
+
+      // Success - has access_token (normal signin flow)
       if ('access_token' in response) {
         try {
           // indicate we're finishing up, then fetch user details and auth info with the new token
@@ -99,7 +108,6 @@ export function MagicLinkHandler({
         } catch (err) {
           const message = getErrorMessage(err);
           setError(new Error(message));
-          if (axios.isAxiosError(err)) setErrorCode(err.response?.status ?? null);
           setStage('idle');
         }
       }
@@ -107,7 +115,6 @@ export function MagicLinkHandler({
     onError: (error: unknown) => {
       const message = getErrorMessage(error);
       setError(new Error(message));
-      if (axios.isAxiosError(error)) setErrorCode(error.response?.status ?? null);
       setStage('idle');
     },
   });
@@ -174,20 +181,7 @@ export function MagicLinkHandler({
             'Failed to verify magic link. It may have expired.'
           }
         />
-        {errorCode === 403 && (
-          <div className="mt-4">
-            <p className="text-caption text-muted mb-3">It looks like your email is not verified yet.</p>
-            <Button
-              className="w-full mb-2"
-              onClick={async () => {
-                // redirect user to verify-email page to request a resend
-                router.push('/auth/verify-email');
-              }}
-            >
-              Resend verification email
-            </Button>
-          </div>
-        )}
+
         <Button
           className="mt-4 w-full"
           onClick={() => router.push('/auth/login')}

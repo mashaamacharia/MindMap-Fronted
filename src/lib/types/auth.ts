@@ -26,7 +26,7 @@ export interface DetectPathOrg {
 }
 
 export interface DetectPathResponse {
-  path: 'owner_signup' | 'invited_member' | 'join_request' | 'returning_user';
+  path: 'owner_signup' | 'invited_member' | 'join_request' | 'returning_user' | 'unverified_user';
   org?: DetectPathOrg | null;
   invitation?: { role: string; invited_by_name: string } | null;
 }
@@ -65,7 +65,7 @@ export interface SignupAndRequest {
 export interface VerifyOtpRequest {
   email: string;
   code: string;
-  purpose: 'signup' | 'signin';
+  purpose: 'signup' | 'signin' | 'verify';
 }
 
 export interface VerifyOtpRequiresOrgSelection {
@@ -91,7 +91,17 @@ export interface RequestSigninRequest {
 
 export interface ResendOtpRequest {
   email: string;
-  purpose: 'signup' | 'signin';
+  purpose: 'signup' | 'signin' | 'verify';
+}
+
+export interface RequestVerificationRequest {
+  email: string;
+  method: 'magic_link' | 'otp_code';
+}
+
+export interface ResendMagicLinkRequest {
+  email: string;
+  purpose: 'signin' | 'verify';
 }
 
 export interface AcceptInvitationRequest {

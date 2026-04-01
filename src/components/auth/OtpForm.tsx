@@ -19,7 +19,7 @@ import { Spinner } from '@/components/ui/Spinner';
 
 interface OtpFormProps {
   email: string;
-  purpose: 'signup' | 'signin';
+  purpose: 'signup' | 'signin' | 'verify';
   onSubmit: (code: string) => Promise<void>;
   onResend: () => Promise<void>;
   isLoading?: boolean;
