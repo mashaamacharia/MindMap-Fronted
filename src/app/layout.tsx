@@ -33,12 +33,29 @@ export const metadata: Metadata = {
     title: 'M1NDMAP11 | Decision Intelligence Platform',
     description:
       'Enterprise decision-intelligence platform for senior executives.',
+    images: [
+      {
+        url: '/images/logo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'M1NDMAP11 Logo',
+      },
+    ],
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'M1NDMAP11 | Decision Intelligence Platform',
     description:
       'Enterprise decision-intelligence platform for senior executives.',
+    images: ['/images/logo.jpg'],
   },
   robots: {
     index: true,

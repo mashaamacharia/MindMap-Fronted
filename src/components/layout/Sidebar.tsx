@@ -267,7 +267,7 @@ export function Sidebar({ isOpen = true, isCollapsed, onClose, onToggle }: Sideb
 
         {/* Footer */}
         <div className="border-t border-border px-4 py-3">
-          <p className="text-caption text-muted">M1NDMAP11 v0.1.0</p>
+          <p className="text-caption text-muted">M1NDMAP11 v1.1.0</p>
         </div>
       </aside>
     </>

@@ -59,7 +59,7 @@ export default function HomePage() {
         const response = await listKnowledge({ limit: 4 });
         setCards(response.items);
       } catch (err) {
-        console.error('[v0] Failed to fetch teaser cards:', err);
+        console.error('Failed to fetch teaser cards:', err);
       } finally {
         setIsLoading(false);
       }
