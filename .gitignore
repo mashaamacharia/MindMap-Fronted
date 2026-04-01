@@ -19,3 +19,8 @@ types.ts
 tsc_output.txt
 tsc-output.txt
 tsc_errors.txt
+page_errors.txt
+page_errors_filtered.txt
+page_tsc_errors.txt
+tsconfig.tsbuildinfo
+DEPLOYMENT_GUIDE.md
