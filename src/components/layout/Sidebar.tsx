@@ -210,7 +210,7 @@ export function Sidebar({ isOpen = true, isCollapsed, onClose, onToggle }: Sideb
       >
         {/* Header with Wordmark and mobile close */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          <Wordmark size="sm" />
+          <Wordmark size="sm" showLogo={true} />
           <Button
             variant="ghost"
             size="icon"
