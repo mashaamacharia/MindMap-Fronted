@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createChallengeSchema, type CreateChallengeInput } from '@/lib/schemas';
 import { useConstants, useDomains, useProjects } from '@/lib/hooks';
 import { Button } from '@/components/ui/Button';
+import Link from 'next/link';
 import { Textarea } from '@/components/ui/Textarea';
 import { Label } from '@/components/ui/Label';
 import {
@@ -16,6 +17,7 @@ import {
 } from '@/components/ui/Select';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { toast } from 'sonner';
 
 interface ChallengeFormProps {
   defaultProjectId?: string;
@@ -68,8 +70,26 @@ export function ChallengeForm({
     );
   }
 
+  const handleFormSubmit = (data: CreateChallengeInput) => {
+    const projectId = data.project_id || '';
+
+    // If user has no projects at all
+    if (!projects?.items || projects.items.length === 0) {
+      toast.error('You need to create a project before creating a challenge.');
+      return;
+    }
+
+    // If projects exist but none selected
+    if (!projectId) {
+      toast.error('Please select a project to associate with this challenge.');
+      return;
+    }
+
+    onSubmit(data);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {error && (
         <ErrorMessage error={error ?? 'Failed to save challenge. Please try again.'} />
       )}
@@ -94,7 +114,12 @@ export function ChallengeForm({
               ))}
             </SelectContent>
           </Select>
-          <p className="text-xs text-charcoal">Every challenge must be associated with a project</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-charcoal">Every challenge must be associated with a project</p>
+            <Button asChild variant="link" size="sm">
+              <Link href="/projects/new">Create project</Link>
+            </Button>
+          </div>
         </div>
 
         {/* Raw text */}
