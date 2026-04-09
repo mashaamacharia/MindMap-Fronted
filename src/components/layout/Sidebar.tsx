@@ -22,6 +22,7 @@ import {
   BookOpen,
   Search,
   Users,
+  UserPlus,
   ScrollText,
   BookMarked,
   UsersRound,
@@ -116,6 +117,12 @@ const adminNavItems: NavItem[] = [
     label: 'Members',
     href: '/settings/organisation',
     icon: Users,
+    minRole: 'admin',
+  },
+  {
+    label: 'Join Requests',
+    href: '/admin/join-requests',
+    icon: UserPlus,
     minRole: 'admin',
   },
   {
